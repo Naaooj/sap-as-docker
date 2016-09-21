@@ -7,7 +7,7 @@ Before creating the container(s), you have to obtain the binaries of the SAP Ada
 
 To download it, you have to register for a *free* version by using this [registration form](
 https://go.sap.com/cmp/syb/crm-xu15-int-asewindm/index.html?url_id=text-us-sapcom-ase-trial-software).
-Alternatively, you can try to download directly the binaries for [Linux](http://d1cuw2q49dpd0p.cloudfront.net/ASE16.0/Linux16SP02/ASE_Suite.linuxamd64.tgz) or [Windows](http://d1cuw2q49dpd0p.cloudfront.net/ASE16.0/Windows16SP02/ASE_Suite.winx64.zip) (if the links are still working).
+Alternatively, you can try to download directly the binaries for [Linux](http://d1cuw2q49dpd0p.cloudfront.net/ASE16.0/Linux16SP02/ASE_Suite.linuxamd64.tgz) or [Windows](http://d1cuw2q49dpd0p.cloudfront.net/ASE16.0/Windows16SP02/ASE_Suite.winx64.zip) (if the links are still working). The linux version is required ad Docker runs linux.
 
 This project assumes that you already have docker installed on your computer, up and running.
 
@@ -20,7 +20,7 @@ The second one, *server*, is the image that will contain the SAP Adaptive Server
 
 To build the first image, go in the *data* folder and issue the following command in a terminal:
 ```
-Build the image for the data container
+# Build the image for the data container
 docker build -t sybase/data:latest .
 ```
 
