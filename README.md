@@ -44,6 +44,14 @@ To run the server container, issue the following command:
 docker run -it --hostname=ASE -p 5000:5000 --privileged=true --volumes-from sybase-data --name=sybase-server sybase/server:latest bash
 ```
 
+Use the following credential to connect to the instance :
+* login: sa
+* password: sybase
+
+There is also an alternative account for the *dockerdb* database:
+* login: dockerdb_login
+* password: dockerdb1234
+
 ## How it works
 The first image is really simple and does not require any explanation. The second one is more complicated and performs a lot more operations. Described below the most important operations.
 
@@ -68,3 +76,6 @@ echo -e "sybase\nsybase" | (passwd sybase)
 chown -R sybase:sybase /opt/sap
 ```
 Adaptive server requires a dedicated user and group to run, named *sybase*. These commands declare a *sybase* user, having *sybase* as password, under the *sybase* group.
+
+### Entrypoint
+The Dockerfile of the server defines an entrypoint, which is used to launch any shell script in the folder */docker-entrypoint.d* of the image. Thus, the script *create_server.sh* is used to create a master database and then executes a SQL script to create a new user/schema.

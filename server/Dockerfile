@@ -27,3 +27,13 @@ RUN cd /tmp && \
 	echo "export SYBASE=/opt/sap" >> ~/.bash_profile
 
 ADD interfaces /tmp/interfaces
+
+ADD entrypoint.sh /docker-entrypoint.sh
+
+ADD create_server.sh /docker-entrypoint.d/create_server.sh
+
+ADD start_stop_server.sh /tmp/start_stop_server.sh
+ADD adaptive_server.rs /tmp/adaptive_server.rs
+ADD bootstrap.sql /tmp/bootstrap.sql
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
