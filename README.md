@@ -43,3 +43,28 @@ To run the server container, issue the following command:
 # Create and start the sybase server interactively, the creation process of the database is displayed in the output
 docker run -it --hostname=ASE -p 5000:5000 --privileged=true --volumes-from sybase-data --name=sybase-server sybase/server:latest bash
 ```
+
+## How it works
+The first image is really simple and does not require any explanation. The second one is more complicated and performs a lot more operations. Described below the most important operations.
+
+### LD_POINTER_GUARD
+```
+echo "export LD_POINTER_GUARD=0" >> ~/.bash_profile
+export LD_POINTER_GUARD=0
+```
+Due to the version of centos and glibc, the environment variable LD_POINTER_GUARD must be set to **0** otherwise Adaptive Server binaries will not work and throw a segmentation fault. It is added in the profile and is going to be used when a container is created, and it is also added in the current execution in order to install Adaptive Server with no error.
+
+### Setup
+```
+./ASE_Suite/setup.bin -f /tmp/responseFile -i silent -DAGREE_TO_SAP_LICENSE=true -DRUN_SILENT=true
+```
+Adaptive server can be installed silently using a response file. Using this type of setup with docker is very easy. To get the response file, I had no other choise than running the setup in a centos VM (in console or in GUI), passing the *-r response_file* option to the setup. This is well explained in this [book](http://help.sap.com/Download/Multimedia/zip-ase1602/SAP_ASE_Installation_Guide_Linux_en.pdf), chapter 6.3.1 on page 45.
+
+### Groups and permission
+```
+groupadd sybase
+useradd -g sybase -s /bin/bash sybase
+echo -e "sybase\nsybase" | (passwd sybase)
+chown -R sybase:sybase /opt/sap
+```
+Adaptive server requires a dedicated user and group to run, named *sybase*. These commands declare a *sybase* user, having *sybase* as password, under the *sybase* group.
